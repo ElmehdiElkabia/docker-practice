@@ -1,0 +1,19 @@
+services:
+  app-container:
+    build: ./app
+    networks:
+      - proxy-network
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "8443:443"
+    networks:
+      - proxy-network
+    depends_on:
+      - app-container
+
+networks:
+  proxy-network:
+    driver: bridge
