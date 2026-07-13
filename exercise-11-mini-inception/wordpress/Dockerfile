@@ -1,0 +1,1 @@
+FROM wordpress:6.6-fpm
