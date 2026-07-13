@@ -1,0 +1,48 @@
+services:
+  mariadb:
+    build: ./mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpressuser
+      MYSQL_PASSWORD: wordpresspassword
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - mini-inception
+
+  wordpress:
+    build: ./wordpress
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpressuser
+      WORDPRESS_DB_PASSWORD: wordpresspassword
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - mini-inception
+  
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    networks:
+      - mini-inception
+    volumes:
+      - wordpress_data:/var/www/html
+
+volumes:
+  mariadb_data:
+  wordpress_data:
+
+networks:
+  mini-inception:
+    driver: bridge
