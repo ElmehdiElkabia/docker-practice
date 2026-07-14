@@ -5,8 +5,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpressuser
-      MYSQL_PASSWORD: wordpresspassword
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: password123
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
@@ -17,9 +17,12 @@ services:
     restart: always
     environment:
       WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: password123
       WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DB_USER: wordpressuser
-      WORDPRESS_DB_PASSWORD: wordpresspassword
+      WP_ADMIN_USER: admin
+      WP_ADMIN_PASSWORD: adminpassword
+      WP_ADMIN_EMAIL: admin@admin.com
     depends_on:
       - mariadb
     volumes:
